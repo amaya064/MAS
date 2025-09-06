@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
-import userRouter from "./route/signup.route.js";
-import employeeRouter from './route/employee.route.js';
+import employeeRouter from "./route/employee.route.js";
+import machineRouter from './route/machine.route.js';
 import productRouter from './route/product.route.js';
 import paymentRouter from './route/payment.route.js';
 import orderRouter from './route/order.route.js';
@@ -29,8 +29,8 @@ app.use('/uploads', express.static('uploads'));
 
 
 // Routes path
-app.use("/api/signup", userRouter);
-app.use('/api/employees', employeeRouter);
+app.use("/api/employees", employeeRouter);
+app.use('/api/machines', machineRouter);
 app.use('/api/products', productRouter);
 app.use('/api/payment', paymentRouter);
 

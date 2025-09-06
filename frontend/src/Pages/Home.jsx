@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaBookOpen } from "react-icons/fa";
+import { FaTools, FaCogs, FaQuoteLeft } from "react-icons/fa";
 import axios from "axios";
-import { FaQuoteLeft } from "react-icons/fa";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -55,150 +54,204 @@ export default function Home() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p className="mt-4 text-gray-300">Loading machine data...</p>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="text-center p-8 bg-gray-800 rounded-xl">
+          <div className="text-red-500 text-6xl mb-4">⚠️</div>
+          <p className="text-xl text-gray-300">{error}</p>
+          <button 
+            className="mt-6 bg-teal-600 hover:bg-teal-700 text-white py-2 px-6 rounded-lg"
+            onClick={() => window.location.reload()}
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
   }
-
-
 
   const testimonials = [
     {
       quote:
-        "An incredible selection of books! I always find something new to read. The staff is super helpful and friendly!",
+        "The predictive maintenance system has reduced our downtime by 45%. The real-time monitoring is incredibly accurate!",
       name: "Sarah Miller",
-      role: "Regular Customer",
+      role: "Maintenance Supervisor",
     },
     {
       quote:
-        "The bookstore has a charming atmosphere. I can easily find my favorite genres, and the cozy seating area makes it a perfect spot to read!",
+        "This system makes managing our equipment so much easier. The alerts help us address issues before they become problems.",
       name: "David Roberts",
-      role: "Book Lover",
+      role: "Plant Manager",
     },
     {
       quote:
-        "A wonderful experience every time I visit. The recommendations are always spot on, and I love the community events!",
+        "The detailed analytics have transformed how we approach equipment maintenance. We've extended machine life by 30%!",
       name: "Emma Johnson",
-      role: "Frequent Visitor",
+      role: "Operations Director",
     },
   ];
 
-
-
-
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-800">
+    <div className="min-h-screen bg-gray-900 text-gray-200">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-teal-500 to-cyan-500 py-24 h-screen">
+      <section className="relative bg-gradient-to-br from-gray-800 to-gray-900 py-24 h-screen">
         {/* Video Background */}
         <div className="absolute inset-0 overflow-hidden">
           <video
-            className="absolute inset-0 w-full h-full object-cover brightness-75"
-            src="src/videos/Home Video.mp4"
+            className="absolute inset-0 w-full h-full object-cover brightness-50"
+            src="src/videos/machinery-video.mp4"
             autoPlay
             muted
             loop
             playsInline
-            aria-label="Background Video"
+            aria-label="Industrial machinery in operation"
           ></video>
         </div>
 
-        {/* Overlay to Enhance Contrast */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black/80"></div>
+        {/* Animated grid overlay for industrial feel */}
+        <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
 
-        {/* Animated Hero Content */}
+        {/* Hero Content */}
         <div className="relative z-10 container mx-auto flex flex-col items-center justify-center h-full text-center space-y-6">
-          <h1 className="text-5xl md:text-7xl font-extrabold text-white drop-shadow-lg animate__animated animate__fadeInDown">
-            Welcome to Our Bookstore
+          <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-lg">
+            Industrial <span className="text-teal-400">Machine Maintenance</span> System
           </h1>
-          <p className="text-lg md:text-2xl text-gray-200 drop-shadow-md animate__animated animate__fadeInUp">
-            Discover a world of stories, knowledge, and imagination.
+          <p className="text-lg md:text-xl text-gray-300 max-w-2xl">
+            Predictive maintenance and real-time monitoring for industrial equipment
           </p>
           <button
             onClick={openModal}
-            className="flex items-center bg-teal-600 hover:bg-teal-700 text-white py-4 px-8 rounded-full text-lg shadow-lg transform hover:scale-110 transition duration-300 animate__animated animate__fadeIn animate__delay-2s"
+            className="flex items-center bg-teal-600 hover:bg-teal-700 text-white py-3 px-6 rounded-lg text-lg shadow-lg transform hover:scale-105 transition duration-300 mt-6"
           >
-            <FaBookOpen className="inline mr-2 text-2xl" /> Browse Our Store
+            <FaTools className="inline mr-2" /> Get Started
           </button>
         </div>
 
         {/* Decorative Elements */}
-        <div className="absolute top-10 right-10 w-32 h-32 bg-cyan-400 rounded-full opacity-30 blur-2xl animate-pulse"></div>
-        <div className="absolute bottom-20 left-10 w-40 h-40 bg-teal-300 rounded-full opacity-30 blur-2xl animate-pulse"></div>
+        <div className="absolute top-10 right-10 w-32 h-32 bg-teal-500 rounded-full opacity-10 blur-2xl animate-pulse"></div>
+        <div className="absolute bottom-20 left-10 w-40 h-40 bg-cyan-500 rounded-full opacity-10 blur-2xl animate-pulse"></div>
       </section>
 
       {/* Modal for Get Started */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-8 w-4/5 md:w-1/2 lg:w-1/3">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold text-teal-600">Get Started</h2>
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 w-full max-w-md">
+            <div className="flex justify-between items-center border-b border-gray-700 pb-3">
+              <h2 className="text-xl font-bold text-teal-400">System Guide</h2>
               <button
                 onClick={closeModal}
-                className="text-xl text-teal-600 hover:text-teal-700"
+                className="text-gray-400 hover:text-white text-xl"
               >
                 &times;
               </button>
             </div>
 
             {/* Step Content */}
-            {currentStep === 1 && (
-              <div>
-                <p className="mt-4 text-lg text-gray-700">
-                  Welcome to our service guide! In this guide, you will learn
-                  how to get started with our platform and take full advantage
-                  of our Book store services.
-                </p>
-              </div>
-            )}
+            <div className="my-6">
+              {currentStep === 1 && (
+                <div>
+                  <div className="flex justify-center mb-4">
+                    <div className="w-16 h-16 bg-teal-900 rounded-full flex items-center justify-center">
+                      <FaCogs className="text-3xl text-teal-400" />
+                    </div>
+                  </div>
+                  <p className="text-gray-300">
+                    Welcome to the Industrial Maintenance System. This guide will help you navigate the platform and utilize all maintenance features effectively.
+                  </p>
+                </div>
+              )}
 
-            {currentStep === 2 && (
-              <div>
-                <p className="mt-4 text-lg text-gray-700">
-                  To begin buying books from our collection, you need to
-                  register and sign in. Once registered, a "Books" tab will
-                  appear in the navigation bar where you can purchase books.
-                </p>
-              </div>
-            )}
+              {currentStep === 2 && (
+                <div>
+                  <div className="flex justify-center mb-4">
+                    <div className="w-16 h-16 bg-teal-900 rounded-full flex items-center justify-center">
+                      <FaTools className="text-3xl text-teal-400" />
+                    </div>
+                  </div>
+                  <p className="text-gray-300">
+                    Access the machine dashboard to view real-time status, schedule maintenance, and receive predictive alerts for potential issues.
+                  </p>
+                </div>
+              )}
 
-            {currentStep === 3 && (
-              <div>
-                <p className="mt-4 text-lg text-gray-700">
-                  On the homepage, you'll find the curated book collection in
-                  the "Learning Pool" section. Additionally, there are various
-                  categories and resources to explore and enjoy.
-                </p>
-              </div>
-            )}
+              {currentStep === 3 && (
+                <div>
+                  <div className="flex justify-center mb-4">
+                    <div className="w-16 h-16 bg-teal-900 rounded-full flex items-center justify-center">
+                      <svg className="w-8 h-8 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <p className="text-gray-300">
+                    View analytics and reports to track equipment performance, maintenance history, and operational efficiency metrics.
+                  </p>
+                </div>
+              )}
 
-            {currentStep === 4 && (
-              <div>
-                <p className="mt-4 text-lg text-gray-700">
-                  That's it! You've completed the guide. Now, you're ready to
-                  explore our services. If you need help at any time, feel free
-                  to revisit this guide.
-                </p>
-              </div>
-            )}
+              {currentStep === 4 && (
+                <div>
+                  <div className="flex justify-center mb-4">
+                    <div className="w-16 h-16 bg-teal-900 rounded-full flex items-center justify-center">
+                      <svg className="w-8 h-8 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <p className="text-gray-300">
+                    You're all set! Start monitoring your equipment and managing maintenance schedules. Revisit this guide anytime from the help section.
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Progress indicator */}
+            <div className="flex justify-center mb-6">
+              {[1, 2, 3, 4].map(step => (
+                <div 
+                  key={step} 
+                  className={`w-3 h-3 rounded-full mx-1 ${currentStep >= step ? 'bg-teal-500' : 'bg-gray-600'}`}
+                ></div>
+              ))}
+            </div>
 
             {/* Navigation buttons */}
-            <div className="mt-6 text-center space-x-4">
+            <div className="flex justify-between">
+              {currentStep > 1 ? (
+                <button
+                  onClick={() => setCurrentStep(currentStep - 1)}
+                  className="bg-gray-700 hover:bg-gray-600 text-white py-2 px-5 rounded-lg"
+                >
+                  Back
+                </button>
+              ) : (
+                <div></div>
+              )}
+              
               {currentStep < 4 ? (
                 <button
                   onClick={nextStep}
-                  className="bg-teal-600 hover:bg-teal-700 text-white py-2 px-6 rounded-full text-lg"
+                  className="bg-teal-600 hover:bg-teal-700 text-white py-2 px-5 rounded-lg"
                 >
                   Next
                 </button>
               ) : (
                 <button
                   onClick={finishGuide}
-                  className="bg-teal-600 hover:bg-teal-700 text-white py-2 px-6 rounded-full text-lg"
+                  className="bg-teal-600 hover:bg-teal-700 text-white py-2 px-5 rounded-lg"
                 >
-                  Finish
+                  Get Started
                 </button>
               )}
             </div>
@@ -206,103 +259,128 @@ export default function Home() {
         </div>
       )}
 
-      <section className="relative py-24 bg-gray-50 text-gray-900">
-        {/* Background Decorations */}
-        <div className="absolute inset-0 bg-gradient-to-br from-teal-100 to-white opacity-50"></div>
-        <div className="absolute -top-10 -left-10 w-40 h-40 bg-teal-300 rounded-full opacity-30 blur-3xl"></div>
-        <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-cyan-300 rounded-full opacity-30 blur-3xl"></div>
+      {/* Machine Pool Section */}
+      <section className="relative py-20 bg-gray-850">
+        <div className="absolute inset-0 bg-circuit-pattern opacity-5"></div>
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Equipment <span className="text-teal-400">Monitoring</span>
+            </h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">
+              Real-time status and predictive maintenance for all your industrial equipment
+            </p>
+          </div>
 
-        <div className="relative z-10 container mx-auto px-6 text-center">
-          <h2 className="text-5xl font-bold text-teal-700 mb-8 tracking-wide uppercase drop-shadow-lg">
-            Learning Pool
-          </h2>
-          <p className="text-lg text-gray-700 mb-12 max-w-3xl mx-auto">
-            Unlock the power of knowledge with our hand-picked selection of
-            educational resources.
-          </p>
-
-          {/* Card Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                title: "The Importance of Learning",
-                image: "src/images/The Importance of Learning.jpeg",
-                description:
-                  "Discover the profound impact of continuous learning on personal growth, career advancement, and overall well-being.",
-                link: "/importance_of_Learning",
+                title: "Predictive Maintenance",
+                image: "src/images/predictive-maintenance.jpg",
+                description: "AI-powered predictions to identify potential failures before they occur, minimizing downtime.",
+                status: "Active",
+                statusColor: "bg-green-500",
+                link: "/predictive_maintenance",
               },
               {
-                title: "Learning Makes a Person Rich",
-                image: "src/images/book5.jpg",
-                description:
-                  "Knowledge is wealth that never depreciates. Every lesson learned and every skill gained adds value to your life and opens doors to endless opportunities.",
-                link: "/learning_Makes_a_Person_Rich",
+                title: "Equipment Health Monitoring",
+                image: "src/images/equipment-health.jpg",
+                description: "Comprehensive monitoring of machine vitals including temperature, vibration, and performance metrics.",
+                status: "Active",
+                statusColor: "bg-green-500",
+                link: "/equipment_health",
               },
               {
-                title: "Benefits of Learning to Read",
-                image: "src/images/book3.jpg",
-                description:
-                  "Reading opens doors to a world of knowledge, imagination, and endless possibilities. Discover the key benefits of learning to read.",
-                link: "/benefits_of_learning_to_read",
+                title: "Maintenance Scheduling",
+                image: "src/images/maintenance-scheduling.jpg",
+                description: "Automated scheduling of routine maintenance tasks with notifications and tracking.",
+                status: "Active",
+                statusColor: "bg-green-500",
+                link: "/maintenance_scheduling",
               },
-            ].map((book, index) => (
-              <div
-                key={index}
-                className="group relative overflow-hidden rounded-3xl shadow-lg bg-white p-6 border border-gray-200 transform transition-transform duration-500 hover:scale-105 hover:shadow-xl"
-              >
-                <div className="relative w-full h-56 overflow-hidden rounded-xl">
-                  <img
-                    src={book.image}
-                    alt={book.title}
-                    className="w-full h-full object-cover rounded-xl group-hover:scale-110 transition-transform duration-500"
+            ].map((machine, index) => (
+              <div key={index} className="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 hover:border-teal-500 transition-colors duration-300">
+                <div className="relative h-48 overflow-hidden">
+                  <img 
+                    src={machine.image} 
+                    alt={machine.title}
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                   />
+                  <div className="absolute top-4 right-4">
+                    <span className={`${machine.statusColor} text-xs text-white py-1 px-2 rounded-full`}>
+                      {machine.status}
+                    </span>
+                  </div>
                 </div>
-                <h3 className="mt-6 text-2xl font-semibold text-gray-900 group-hover:text-teal-600 transition duration-300">
-                  {book.title}
-                </h3>
-                <p className="text-gray-600 mt-3 leading-relaxed">
-                  {book.description}
-                </p>
-                <Link
-                  to={book.link}
-                  className="mt-6 inline-block bg-teal-600 hover:bg-teal-700 text-white py-3 px-6 rounded-full text-lg shadow-md transition-all duration-300 transform hover:-translate-y-1"
-                >
-                  Learn More
-                </Link>
+                
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold text-white mb-2">{machine.title}</h3>
+                  <p className="text-gray-400 mb-4">{machine.description}</p>
+                  
+                  <Link
+                    to={machine.link}
+                    className="inline-flex items-center text-teal-400 hover:text-teal-300 font-medium"
+                  >
+                    View Details
+                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                  </Link>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-16 bg-gradient-to-b from-gray-50 to-gray-200 text-gray-900">
-  <div className="container mx-auto px-6 text-center">
-    <h2 className="text-4xl font-extrabold text-teal-700 mb-12">
-      What Our Readers Are Saying
-    </h2>
-    <div className="flex flex-wrap justify-center gap-8">
-      {testimonials.map((testimonial, index) => (
-        <div
-          key={index}
-          className="w-full md:w-1/3 bg-white p-8 rounded-xl shadow-xl border border-gray-200 
-            hover:shadow-2xl hover:-translate-y-2 transition-transform duration-300 backdrop-blur-md"
-        >
-          <div className="flex justify-center mb-4 text-teal-600">
-            <FaQuoteLeft className="text-4xl opacity-80" />
-          </div>
-          <p className="text-lg italic text-gray-800 leading-relaxed mb-4">
-            "{testimonial.quote}"
+      {/* Testimonials Section */}
+      <section className="py-16 bg-gray-900">
+        <div className="container mx-auto px-6">
+          <h2 className="text-3xl font-bold text-center text-white mb-2">
+            Trusted by <span className="text-teal-400">Industry Leaders</span>
+          </h2>
+          <p className="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
+            See what maintenance professionals are saying about our system
           </p>
-          <p className="font-semibold text-teal-700">{testimonial.name}</p>
-          <p className="text-sm text-gray-500">{testimonial.role}</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <div key={index} className="bg-gray-800 p-6 rounded-xl border border-gray-700 hover:border-teal-500 transition-colors duration-300">
+                <div className="flex mb-4 text-teal-400">
+                  <FaQuoteLeft className="text-2xl opacity-80" />
+                </div>
+                <p className="text-gray-300 italic mb-6">
+                  "{testimonial.quote}"
+                </p>
+                <div>
+                  <p className="font-semibold text-white">{testimonial.name}</p>
+                  <p className="text-sm text-gray-400">{testimonial.role}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      ))}
-    </div>
-  </div>
-</section>
+      </section>
 
-
-
+      {/* Stats Section */}
+      <section className="py-16 bg-gray-850">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            {[
+              { value: "98%", label: "Uptime" },
+              { value: "45%", label: "Downtime Reduction" },
+              { value: "30%", label: "Extended Machine Life" },
+              { value: "24/7", label: "Monitoring" },
+            ].map((stat, index) => (
+              <div key={index} className="bg-gray-800 p-6 rounded-xl border border-gray-700">
+                <div className="text-3xl font-bold text-teal-400 mb-2">{stat.value}</div>
+                <div className="text-gray-400 text-sm">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
