@@ -32,7 +32,7 @@ export default function Admin_Login() {
       navigate("/adminhome");
     } else {
       setError("Invalid admin credentials. Please try again.");
-    }
+    }ල්
   };
 
   const handleCompanyLogin = async (e) => {
