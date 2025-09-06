@@ -113,13 +113,7 @@ export default function EmployeeRegistration() {
         {/* Navigation Menu */}
         <nav className="mt-5">
           <ul className="space-y-2">
-            <li
-              className="flex items-center p-3 hover:bg-gray-700 rounded-md cursor-pointer transition-all group"
-              onClick={() => navigate("/adminhome")}
-            >
-              <FaTools className="text-teal-400 text-sm mr-2 group-hover:text-teal-300" />
-              <span className="text-sm group-hover:text-gray-200">Admin Home</span>
-            </li>
+            
             <li
               className="flex items-center p-3 bg-gray-700 rounded-md cursor-pointer transition-all group"
             >
@@ -149,7 +143,7 @@ export default function EmployeeRegistration() {
             </li>
             <li
               className="flex items-center p-3 hover:bg-gray-700 rounded-md cursor-pointer transition-all group"
-              onClick={() => navigate("/maintenance-schedule")}
+              onClick={() => navigate("/Machine_maintenance_schedule")}
             >
               <FaCalendar className="text-teal-400 text-sm mr-2 group-hover:text-teal-300" />
               <span className="text-sm group-hover:text-gray-200">Maintenance Schedule</span>

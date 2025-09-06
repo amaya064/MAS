@@ -108,13 +108,7 @@ export default function Machine_view() {
         {/* Navigation Menu */}
         <nav className="mt-5">
           <ul className="space-y-2">
-            <li
-              className="flex items-center p-3 hover:bg-gray-700 rounded-md cursor-pointer transition-all group"
-              onClick={() => navigate("/adminhome")}
-            >
-              <FaTools className="text-teal-400 text-sm mr-2 group-hover:text-teal-300" />
-              <span className="text-sm group-hover:text-gray-200">Admin Home</span>
-            </li>
+
             <li
               className="flex items-center p-3 hover:bg-gray-700 rounded-md cursor-pointer transition-all group"
               onClick={() => navigate("/New_machine_registration")}
@@ -136,12 +130,12 @@ export default function Machine_view() {
               <span className="text-sm group-hover:text-gray-200">View Technicians</span>
             </li>
             <li
-              className="flex items-center p-3 hover:bg-gray-700 rounded-md cursor-pointer transition-all group"
-              onClick={() => navigate("/maintenance-schedule")}
-            >
-              <FaCalendar className="text-teal-400 text-sm mr-2 group-hover:text-teal-300" />
-              <span className="text-sm group-hover:text-gray-200">Maintenance Schedule</span>
-            </li>
+                          className="flex items-center p-3 hover:bg-gray-700 rounded-md cursor-pointer transition-all group"
+                          onClick={() => navigate("/Machine_maintenance_schedule")}
+                        >
+                          <FaCalendar className="text-teal-400 text-sm mr-2 group-hover:text-teal-300" />
+                          <span className="text-sm group-hover:text-gray-200">Maintenance Schedule</span>
+                        </li>
           </ul>
         </nav>
       </aside>
@@ -305,12 +299,12 @@ export default function Machine_view() {
                               <FaEye className="text-xs" />
                             </button>
                             <button
-                              onClick={() => navigate(`/edit-machine/${machine._id}`)}
-                              className="text-blue-600 hover:text-blue-900 p-1.5 rounded hover:bg-blue-50 transition-colors"
-                              title="Edit Machine"
-                            >
-                              <FaEdit className="text-xs" />
-                            </button>
+  onClick={() => navigate(`/New_machine_registration/${machine._id}`)}
+  className="text-blue-600 hover:text-blue-900 p-1.5 rounded hover:bg-blue-50 transition-colors"
+  title="Edit Machine"
+>
+  <FaEdit className="text-xs" />
+</button>
                             <button
                               onClick={() => handleRemove(machine._id)}
                               className="text-red-600 hover:text-red-900 p-1.5 rounded hover:bg-red-50 transition-colors"
