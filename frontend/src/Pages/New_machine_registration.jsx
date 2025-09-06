@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   FaCog,
@@ -12,12 +12,15 @@ import {
   FaTools,
   FaExclamationTriangle,
   FaIndustry,
-  FaPlusCircle
+  FaPlusCircle,
+  FaSave
 } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function New_machine_registration() {
   const navigate = useNavigate();
+  const { id } = useParams(); // Get machine ID from URL if in edit mode
+  const [isEditMode, setIsEditMode] = useState(false);
   const [formData, setFormData] = useState({
     machineName: "",
     department: "",
@@ -32,6 +35,41 @@ export default function New_machine_registration() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Check if we're in edit mode and fetch machine data
+  useEffect(() => {
+    if (id) {
+      setIsEditMode(true);
+      fetchMachineData();
+    }
+  }, [id]);
+
+  const fetchMachineData = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`http://localhost:3000/api/machines`);
+      const machine = response.data.data.find(m => m._id === id);
+      
+      if (machine) {
+        setFormData({
+          machineName: machine.machineName || "",
+          department: machine.department || "",
+          technicianName: machine.technicianName || "",
+          model: machine.model || "",
+          serialNumber: machine.serialNumber || "",
+          prNumber: machine.prNumber || "",
+          poNumber: machine.poNumber || "",
+          manufactureDate: machine.manufactureDate ? new Date(machine.manufactureDate).toISOString().split('T')[0] : "",
+          installationDate: machine.installationDate ? new Date(machine.installationDate).toISOString().split('T')[0] : ""
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching machine data:', error);
+      setError("Failed to load machine data");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setError(""); // Clear error when user starts typing
@@ -43,32 +81,47 @@ export default function New_machine_registration() {
     setError("");
     
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/machines/register",
-        formData,
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          timeout: 10000 // 10 second timeout
-        }
-      );
-      
-      alert(response.data.message);
-      navigate("/Machine_view");
+      if (isEditMode) {
+        // Update existing machine
+        const response = await axios.put(
+          `http://localhost:3000/api/machines/${id}`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            timeout: 10000
+          }
+        );
+        
+        alert(response.data.message);
+        navigate("/Machine_view");
+      } else {
+        // Register new machine
+        const response = await axios.post(
+          "http://localhost:3000/api/machines/register",
+          formData,
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            timeout: 10000
+          }
+        );
+        
+        alert(response.data.message);
+        navigate("/Machine_view");
+      }
     } catch (error) {
-      console.error('Registration error:', error);
+      console.error('Submission error:', error);
       
       if (error.response) {
-        // Server responded with error status
-        setError(error.response.data.message || "Registration failed");
-        alert(error.response.data.message || "Registration failed");
+        setError(error.response.data.message || "Operation failed");
+        alert(error.response.data.message || "Operation failed");
       } else if (error.request) {
-        // Request was made but no response received
         setError("No response from server. Please check if the server is running.");
         alert("No response from server. Please check if the server is running.");
       } else {
-        // Other errors
         setError(error.message || "Something went wrong");
         alert(error.message || "Something went wrong");
       }
@@ -81,45 +134,21 @@ export default function New_machine_registration() {
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
       <aside className="w-56 bg-gradient-to-br from-gray-800 to-gray-900 text-white shadow-xl">
-        {/* Profile Section */}
-        <div className="p-5 border-b border-gray-700">
-          <div className="flex items-center space-x-3">
-            <div className="bg-gray-700 rounded-full w-10 h-10 flex items-center justify-center">
-              <img
-                src="src/images/profilelogo.png"
-                alt="Profile Icon"
-                className="rounded-full w-full h-full object-cover"
-              />
-            </div>
-            <div>
-              <h2 className="text-lg font-semibold">Admin</h2>
-              <p className="text-gray-400 text-xs">Machine Dashboard</p>
-            </div>
-          </div>
-        </div>
-
         {/* Navigation Menu */}
         <nav className="mt-5">
           <ul className="space-y-2">
             <li
               className="flex items-center p-3 hover:bg-gray-700 rounded-md cursor-pointer transition-all group"
-              onClick={() => navigate("/adminhome")}
-            >
-              <FaTools className="text-teal-400 text-sm mr-2 group-hover:text-teal-300" />
-              <span className="text-sm group-hover:text-gray-200">Admin Home</span>
-            </li>
-            <li
-              className="flex items-center p-3 hover:bg-gray-700 rounded-md cursor-pointer transition-all group"
               onClick={() => navigate("/EmployeeRegistration")}
             >
               <FaTools className="text-teal-400 text-sm mr-2 group-hover:text-teal-300" />
-              <span className="text-sm group-hover:text-gray-200">Register Employee</span>
+              <span className="text-sm group-hover:text-gray-200">Register Employees</span>
             </li>
             <li
               className="flex items-center p-3 bg-gray-700 rounded-md cursor-pointer transition-all group"
             >
               <FaCog className="text-teal-300 text-sm mr-2" />
-              <span className="text-sm text-gray-200">Register Machine</span>
+              <span className="text-sm text-gray-200">{isEditMode ? 'Update Machine' : 'Register Machine'}</span>
             </li>
             <li
               className="flex items-center p-3 hover:bg-gray-700 rounded-md cursor-pointer transition-all group"
@@ -155,9 +184,11 @@ export default function New_machine_registration() {
               <FaIndustry className="text-white text-xl" />
             </div>
             <h1 className="text-2xl font-bold text-gray-800 mb-2">
-              Register New Machine
+              {isEditMode ? 'Update Machine' : 'Register New Machine'}
             </h1>
-            <p className="text-gray-600 text-sm">Add new industrial equipment to your maintenance system</p>
+            <p className="text-gray-600 text-sm">
+              {isEditMode ? 'Update existing industrial equipment' : 'Add new industrial equipment to your maintenance system'}
+            </p>
           </div>
 
           {/* Error Display */}
@@ -182,6 +213,7 @@ export default function New_machine_registration() {
                       id="machineName"
                       name="machineName"
                       placeholder="Machine Name"
+                      value={formData.machineName}
                       className="w-full bg-transparent focus:outline-none text-gray-700 placeholder-gray-500 text-sm"
                       onChange={handleChange}
                       required
@@ -197,6 +229,7 @@ export default function New_machine_registration() {
                       id="department"
                       name="department"
                       placeholder="Department"
+                      value={formData.department}
                       className="w-full bg-transparent focus:outline-none text-gray-700 placeholder-gray-500 text-sm"
                       onChange={handleChange}
                       required
@@ -212,6 +245,7 @@ export default function New_machine_registration() {
                       id="technicianName"
                       name="technicianName"
                       placeholder="Technician Name"
+                      value={formData.technicianName}
                       className="w-full bg-transparent focus:outline-none text-gray-700 placeholder-gray-500 text-sm"
                       onChange={handleChange}
                       required
@@ -227,6 +261,7 @@ export default function New_machine_registration() {
                       id="model"
                       name="model"
                       placeholder="Model"
+                      value={formData.model}
                       className="w-full bg-transparent focus:outline-none text-gray-700 placeholder-gray-500 text-sm"
                       onChange={handleChange}
                       required
@@ -245,6 +280,7 @@ export default function New_machine_registration() {
                       id="serialNumber"
                       name="serialNumber"
                       placeholder="Serial Number"
+                      value={formData.serialNumber}
                       className="w-full bg-transparent focus:outline-none text-gray-700 placeholder-gray-500 text-sm"
                       onChange={handleChange}
                       required
@@ -260,6 +296,7 @@ export default function New_machine_registration() {
                       id="prNumber"
                       name="prNumber"
                       placeholder="PR Number"
+                      value={formData.prNumber}
                       className="w-full bg-transparent focus:outline-none text-gray-700 placeholder-gray-500 text-sm"
                       onChange={handleChange}
                       required
@@ -275,6 +312,7 @@ export default function New_machine_registration() {
                       id="poNumber"
                       name="poNumber"
                       placeholder="PO Number"
+                      value={formData.poNumber}
                       className="w-full bg-transparent focus:outline-none text-gray-700 placeholder-gray-500 text-sm"
                       onChange={handleChange}
                       required
@@ -289,6 +327,7 @@ export default function New_machine_registration() {
                       type="date"
                       id="manufactureDate"
                       name="manufactureDate"
+                      value={formData.manufactureDate}
                       className="w-full bg-transparent focus:outline-none text-gray-700 text-sm"
                       onChange={handleChange}
                       required
@@ -303,6 +342,7 @@ export default function New_machine_registration() {
                       type="date"
                       id="installationDate"
                       name="installationDate"
+                      value={formData.installationDate}
                       className="w-full bg-transparent focus:outline-none text-gray-700 text-sm"
                       onChange={handleChange}
                       required
@@ -319,12 +359,21 @@ export default function New_machine_registration() {
                 {loading ? (
                   <>
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                    Registering...
+                    {isEditMode ? 'Updating...' : 'Registering...'}
                   </>
                 ) : (
                   <>
-                    <FaPlusCircle className="mr-2 text-xs" />
-                    Register Machine
+                    {isEditMode ? (
+                      <>
+                        <FaSave className="mr-2 text-xs" />
+                        Update Machine
+                      </>
+                    ) : (
+                      <>
+                        <FaPlusCircle className="mr-2 text-xs" />
+                        Register Machine
+                      </>
+                    )}
                   </>
                 )}
               </button>

@@ -232,6 +232,57 @@ export const getAllMaintenanceSchedules = async (req, res) => {
 };
 
 
+export const updateMachine = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body;
+
+    // Convert date strings to Date objects if they exist
+    if (updates.manufactureDate) {
+      updates.manufactureDate = new Date(updates.manufactureDate);
+    }
+    if (updates.installationDate) {
+      updates.installationDate = new Date(updates.installationDate);
+    }
+
+    const machine = await Machine.findByIdAndUpdate(
+      id,
+      updates,
+      { new: true, runValidators: true }
+    );
+
+    if (!machine) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'Machine not found' 
+      });
+    }
+
+    res.status(200).json({ 
+      success: true, 
+      message: 'Machine updated successfully', 
+      data: machine 
+    });
+  } catch (error) {
+    console.error('Update error:', error);
+    
+    if (error.name === 'ValidationError') {
+      const errors = Object.values(error.errors).map(err => err.message);
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Validation error', 
+        errors 
+      });
+    }
+    
+    res.status(500).json({ 
+      success: false, 
+      message: 'Server error', 
+      error: error.message 
+    });
+  }
+};
+
 
 // Company Login Controller
 export const companyLogin = async (req, res) => {

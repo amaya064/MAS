@@ -23,6 +23,7 @@ export default function App() {
       <Route path="/shop_workers_Login" element={<Shop_workers_Login />} />
       <Route path="/adminhome" element={<Admin_Home />} />
       <Route path="/New_machine_registration" element={<New_machine_registration />} />
+      <Route path="/New_machine_registration/:id?" element={<New_machine_registration />} />
       <Route path="/Machine_view" element={<Machine_view />} />
       <Route path="/Machine_maintenance_schedule" element={<Machine_maintenance_schedule />} />
       <Route path="/employeeupdateprofile" element={<Employee_Update_profile />} />
